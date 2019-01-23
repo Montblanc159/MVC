@@ -8,8 +8,9 @@ class Gossip
 
   def save
     # Création d'un fichier email.csv dans notre data base.
-    csv = CSV.open("db/gossip.csv", "a")
-    csv << [@author, @content]
+    CSV.open("db/gossip.csv", "a") do |csv|
+      csv << [@author, @content]
+    end
   end
 
   def self.all
@@ -20,6 +21,16 @@ class Gossip
       all_gossips << temp_gossip
     end
     return all_gossips
+  end
+
+  def self.delete(params)
+    all_gossips = Gossip.all
+    all_gossips.delete_at(params)
+    CSV.open("db/gossip.csv", "w") do |csv|
+      all_gossips.each do |gossip|
+        csv << [gossip.author, gossip.content]
+      end
+    end
   end
 
 end

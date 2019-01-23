@@ -19,4 +19,9 @@ class Controller
     index = Gossip.all
     params = @view.index_gossips(index)
   end
+
+  def delete_gossips
+    params = @view.delete_gossips(Gossip.all)
+    updated_index = Gossip.delete(params)
+  end
 end
